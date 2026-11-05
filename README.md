@@ -18,6 +18,10 @@ Every result starts with the same label: it is a **chain view, not a verdict**. 
 
 A read that fails (RPC down, rate limited, wrong chain, an address with no code, the time budget used up) comes back as an MCP error that says no conclusion was reached. It never comes back as an empty or clean report.
 
+## Use as a skill
+
+The [`skill/`](skill/) folder holds a portable [Agent Skill](https://modelcontextprotocol.io) (`SKILL.md`). Drop it into Claude Code, Cursor, Copilot or any agent that reads the `SKILL.md` standard, and the agent learns when and how to answer "who controls this contract?" — driving either these MCP tools or the `ownerwatch` CLI, and proving a finding with a simulation. It needs no key, no wallet and no account. See [skill/README.md](skill/README.md) to install.
+
 ## Quick start
 
 From an empty directory, with Python 3.10 or later:

@@ -12,6 +12,9 @@ Where an MCP server like this one gets listed, what each place requires, and wha
 
 ## Where it can be listed
 
+> A portable Agent Skill lives in [`skill/`](skill/). It can be listed on its own on skill marketplaces (for example Agensi), and it reaches auditors who search those marketplaces for exactly this. Paid listings on such marketplaces route payouts through Stripe, which needs KYC and is not available in every jurisdiction; a **free** listing for distribution does not, and is the path to use where paid onboarding is unavailable.
+
+
 | Place | How a server gets in | What it needs | On automated or generated submissions |
 |---|---|---|---|
 | [Official MCP Registry](https://registry.modelcontextprotocol.io) | `mcp-publisher login github` (a device code entered at github.com/login/device), then `mcp-publisher publish` with `server.json` | The package already on PyPI; a name under `io.github.imal1ice/`, so the login must be the GitHub account `imal1ice`; the `mcp-name:` line in the PyPI README. `server.json` is in this repository and validates against the 2025-12-11 schema | Publishing from CI is a documented path ([GitHub Actions guide](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/github-actions.mdx), OIDC). The [moderation policy](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/moderation-policy.mdx) removes "Illegal content, which includes obscene content, copyright violations, and hacking tools", malware, spam ("The same server being submitted multiple times under different names") and non-functioning servers. Nothing on generated text |
