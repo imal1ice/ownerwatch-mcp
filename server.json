@@ -1,0 +1,35 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.imal1ice/ownerwatch-mcp",
+  "title": "ownerwatch",
+  "description": "Read-only: who controls EVM contracts. Owners, proxy admins, Safes, timelocks, roles.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/imal1ice/ownerwatch-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "ownerwatch-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "OWNERWATCH_MCP_TIMEOUT",
+          "description": "Seconds a tool call may take, 10 to 3600 (default 240)",
+          "format": "number",
+          "isRequired": false
+        },
+        {
+          "name": "OWNERWATCH_MCP_ALLOW_PRIVATE_RPC",
+          "description": "Set to 1 to allow http:// and private or loopback RPC hosts (a local node)",
+          "isRequired": false
+        }
+      ]
+    }
+  ]
+}
