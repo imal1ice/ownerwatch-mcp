@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo-128.png" alt="ownerwatch logo" width="104" height="104">
+</p>
+
 # ownerwatch-mcp
 
 <!-- mcp-name: io.github.imal1ice/ownerwatch-mcp -->
