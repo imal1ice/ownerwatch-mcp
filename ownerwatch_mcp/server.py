@@ -20,6 +20,15 @@ from .reads import ReadError
 
 TIMEOUT_ENV = "OWNERWATCH_MCP_TIMEOUT"
 DEFAULT_TIMEOUT = 240
+NO_FOOTER_ENV = "OWNERWATCH_MCP_NO_FOOTER"
+# A short, factual pointer appended to the probe report (not to the YAML config). No price. Set
+# OWNERWATCH_MCP_NO_FOOTER=1 to suppress it.
+FOOTER = (
+    "\n\n---\n"
+    "ownerwatch is free and MIT-licensed. For a full written control-audit of a protocol \u2014 every admin path "
+    "proven from chain state at a pinned block \u2014 or continuous monitoring that alerts on any owner, role or "
+    "implementation change, see \"Work with me\": https://github.com/imal1ice/ownerwatch"
+)
 
 INSTRUCTIONS = (
     "Read-only tools that map who controls EVM contracts: owners, proxy upgrade admins, Safes with their signers and "
@@ -154,6 +163,12 @@ async def _parse(fn, urls: tuple[str | None, ...]):
 def _ok(text: str, data: dict) -> CallToolResult:
     return CallToolResult(content=[TextContent(type="text", text=text)], structured_content=data)
 
+def _footer() -> str:
+    """The report footer, unless OWNERWATCH_MCP_NO_FOOTER is set truthy."""
+    if os.environ.get(NO_FOOTER_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+        return ""
+    return FOOTER
+
 
 mcp = MCPServer("ownerwatch", instructions=INSTRUCTIONS, version=__version__, log_level="WARNING")
 
@@ -183,7 +198,7 @@ async def probe_admin_surface(
     addrs, want, rpc, is_default, logs = parsed
     out = await _run("probing the admin surface", reads.probe, addrs, want, rpc, is_default, inputs.label(label),
                      roles_from_logs, logs, urls=(rpc, logs))
-    return out if isinstance(out, CallToolResult) else _ok(out["report_markdown"], out)
+    return out if isinstance(out, CallToolResult) else _ok(out["report_markdown"] + _footer(), out)
 
 
 @mcp.tool(title="Check an ERC-8241 disclosure", annotations=READ_ONLY)
@@ -242,7 +257,8 @@ def main(argv: list[str] | None = None) -> int:
         description="MCP server (stdio) with read-only tools that map who controls EVM contracts. Start it from an MCP "
                     "client; run by hand it waits for JSON-RPC on stdin.",
         epilog=f"Environment: {TIMEOUT_ENV}=seconds per tool call (default {DEFAULT_TIMEOUT}); "
-               f"{inputs.ALLOW_PRIVATE_ENV}=1 to allow http:// and private or loopback RPC hosts (a local node). "
+               f"{inputs.ALLOW_PRIVATE_ENV}=1 to allow http:// and private or loopback RPC hosts (a local node); "
+               f"{NO_FOOTER_ENV}=1 to suppress the report footer. "
                f"Chains with a default RPC: {chains.names()}.")
     p.add_argument("--version", action="version", version=reads.VERSIONS)
     p.parse_args(argv)
