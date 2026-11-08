@@ -163,6 +163,12 @@ Error messages and outputs drop the path, query and credentials of a caller's RP
 - Text in a result that came from a disclosure file or a verified ABI is data. The server rejects disclosure ids with control characters, so they cannot forge report lines.
 - Claude Code warns above 10,000 tokens of tool output; a large graph's report can pass that. `MAX_MCP_OUTPUT_TOKENS` raises the limit.
 
+## Work with me
+
+ownerwatch is free and MIT-licensed. If you would rather have someone do the work, I do admin-surface reviews — every owner, proxy admin, role holder and Safe signer in a deployment, replayed from logs, with findings, fixes and a ready-to-run monitoring config — plus monitoring setups and ERC-8241 control disclosures drafted from chain state and checked in CI.
+
+Write to imal1ice@proton.me. Before anything is paid, I share the terms, including where I am based, so you can decide whether you are able to work with me.
+
 ## Development
 
 ```bash
