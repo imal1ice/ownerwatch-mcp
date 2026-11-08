@@ -1,0 +1,89 @@
+name: publish-mcp-registry
+
+# Publishes the server to the Official MCP Registry (registry.modelcontextprotocol.io)
+# via GitHub OIDC — no token, no account setup: the io.github.imal1ice/* namespace is
+# authorised by proving this workflow runs in imal1ice's repo. Runs after each GitHub
+# Release (once the PyPI package is live) and can be run by hand (workflow_dispatch) to
+# (re)publish the current server.json version.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version already on PyPI to register (default: server.json .version)"
+        required: false
+
+permissions:
+  id-token: write   # OIDC auth to the MCP Registry
+  contents: read
+
+env:
+  MCP_PUBLISHER_VERSION: v1.8.1
+
+jobs:
+  mcp-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
+            V="${GITHUB_REF#refs/tags/v}"
+          elif [[ -n "${INPUT_VERSION:-}" ]]; then
+            V="${INPUT_VERSION}"
+          else
+            V="$(jq -r '.version' server.json)"
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "Registering ownerwatch-mcp $V"
+
+      - name: Pin server.json to this version
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          jq --arg v "$V" '.version = $v | (.packages[]? | .version) = $v' server.json > server.tmp
+          mv server.tmp server.json
+
+      - name: Wait for the package on PyPI
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          for i in $(seq 1 30); do
+            code="$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/ownerwatch-mcp/$V/json")"
+            if [ "$code" = "200" ]; then echo "PyPI has ownerwatch-mcp $V"; exit 0; fi
+            echo "waiting for PyPI ownerwatch-mcp $V (got $code)..."; sleep 10
+          done
+          echo "PyPI package ownerwatch-mcp $V not found after waiting" >&2; exit 1
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Download and verify mcp-publisher
+        run: |
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
+
+      - name: Authenticate to the MCP Registry (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server to the MCP Registry
+        run: ./mcp-publisher publish
