@@ -50,10 +50,13 @@ def test_chain_resolution():
         inputs.chain_and_rpc(None, None)
     with pytest.raises(InputError, match="unknown chain"):
         inputs.chain_and_rpc("solana", None)
-    # every default is https and names a chain ownerwatch knows by the same name
+    # every default is https, and ownerwatch does not name the chain something else: it either shares the name
+    # or does not know the chain yet (generic "chain <id>" fallback). The MCP may list a chain before the
+    # installed ownerwatch release names it; a *different* real name would be a genuine mismatch.
     from ownerwatch.probe import chain_name_for
     for c in chains.CHAINS:
-        assert c.default_rpc.startswith("https://") and chain_name_for(c.chain_id) == c.name
+        assert c.default_rpc.startswith("https://")
+        assert chain_name_for(c.chain_id) in (c.name, f"chain {c.chain_id}")
 
 
 def test_label_is_plain_text():

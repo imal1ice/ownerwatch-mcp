@@ -135,6 +135,7 @@ Pass `chain` to use a public default RPC, or `rpc_url` for your own. With both, 
 | bsc (bnb) | 56 | https://bsc-rpc.publicnode.com |
 | gnosis | 100 | https://gnosis-rpc.publicnode.com |
 | polygon (matic, pol) | 137 | https://polygon-bor-rpc.publicnode.com |
+| injective (inj) | 1776 | https://sentry.evm-rpc.injective.network |
 | base | 8453 | https://base-rpc.publicnode.com |
 | arbitrum (arb) | 42161 | https://arb1.arbitrum.io/rpc |
 | avalanche (avax) | 43114 | https://avalanche-c-chain-rpc.publicnode.com |

@@ -1,7 +1,8 @@
 """Chains with a public default RPC. Names match ownerwatch's chain names, so a suggested config lines up with
 ownerwatch's Safe Transaction Service keys. Every default answered eth_chainId, eth_call, eth_getCode and an
 address-scoped eth_getLogs on 2026-11-05, except Polygon's, which is publicnode's documented endpoint and did not
-resolve from the machine that built this list. A caller can always pass its own rpc_url."""
+resolve from the machine that built this list. Injective (native EVM, chain id 1776) was added 2026-11-09 and
+answered the same four calls then. A caller can always pass its own rpc_url."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -21,6 +22,7 @@ CHAINS = (
     Chain("bsc", 56, "https://bsc-rpc.publicnode.com", ("bnb", "binance", "bnb-smart-chain")),
     Chain("gnosis", 100, "https://gnosis-rpc.publicnode.com", ("xdai", "gno")),
     Chain("polygon", 137, "https://polygon-bor-rpc.publicnode.com", ("matic", "pol", "polygon-pos")),
+    Chain("injective", 1776, "https://sentry.evm-rpc.injective.network", ("inj", "injective-evm")),
     Chain("base", 8453, "https://base-rpc.publicnode.com", ("base-mainnet",)),
     Chain("arbitrum", 42161, "https://arb1.arbitrum.io/rpc", ("arb", "arb1", "arbitrum-one")),
     Chain("avalanche", 43114, "https://avalanche-c-chain-rpc.publicnode.com", ("avax", "avalanche-c")),
