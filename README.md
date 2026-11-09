@@ -165,7 +165,7 @@ Error messages and outputs drop the path, query and credentials of a caller's RP
 
 ## Work with me
 
-ownerwatch is free and MIT-licensed. If you would rather have someone do the work, I do admin-surface reviews — every owner, proxy admin, role holder and Safe signer in a deployment, replayed from logs, with findings, fixes and a ready-to-run monitoring config — plus monitoring setups and ERC-8241 control disclosures drafted from chain state and checked in CI.
+ownerwatch is free and MIT-licensed. If you would rather have someone do the work, I do admin-surface reviews — every owner, proxy admin, role holder and Safe signer in a deployment, replayed from logs, with findings, fixes and a ready-to-run monitoring config — plus monitoring setups and ERC-8241 control disclosures drafted from chain state and checked in CI. If you would rather not run anything yourself, I can also run the monitor for you as a hosted service — paid on-chain in USDC, no account or invoice on either side; see [docs/hosted.md](https://github.com/imal1ice/ownerwatch/blob/main/docs/hosted.md).
 
 Write to imal1ice@proton.me. Before anything is paid, I share the terms, including where I am based, so you can decide whether you are able to work with me.
 
