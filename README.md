@@ -6,7 +6,7 @@
 
 <!-- mcp-name: io.github.imal1ice/ownerwatch-mcp -->
 
-A [Model Context Protocol](https://modelcontextprotocol.io) server that lets a coding agent answer "who controls this contract?" for any EVM address. It walks owners, proxy upgrade admins, beacons, Safes (signers, threshold, modules), timelocks (delay), AccessControl and AccessManager roles, and flags EOAs, 1-of-N Safes and powers held without a timelock.
+A [Model Context Protocol](https://modelcontextprotocol.io) server that lets a coding agent answer "who controls this contract?" for any EVM address. It walks owners, proxy upgrade admins, beacons, EIP-2535 diamonds (upgradeable through `diamondCut`, an upgrade path no proxy slot reveals — so most tools read a diamond as immutable), Safes (signers, threshold, modules, transaction guard), timelocks (delay), AccessControl and AccessManager roles, and flags EOAs, 1-of-N Safes and powers held without a timelock.
 
 It is built on [ownerwatch](https://github.com/imal1ice/ownerwatch) and runs over stdio on your machine. Every tool is read-only: no key, no wallet, no account, and nothing is ever sent on-chain.
 

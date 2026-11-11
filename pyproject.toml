@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ownerwatch-mcp"
 version = "0.1.0"
-description = "MCP server with read-only tools that map who controls EVM contracts: owners, proxy admins, Safes, timelocks, roles. Built on ownerwatch."
+description = "MCP server with read-only tools that map who controls EVM contracts: owners, proxy admins, EIP-2535 diamonds, Safes (and transaction guards), timelocks, roles. Built on ownerwatch."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]

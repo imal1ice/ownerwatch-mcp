@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.imal1ice/ownerwatch-mcp",
   "title": "ownerwatch",
-  "description": "Read-only: who controls EVM contracts. Owners, proxy admins, Safes, timelocks, roles.",
+  "description": "Read-only: who controls EVM contracts — owners, proxy admins, EIP-2535 diamonds, Safes (and guards), timelocks, roles.",
   "version": "0.1.0",
   "repository": {
     "url": "https://github.com/imal1ice/ownerwatch-mcp",
